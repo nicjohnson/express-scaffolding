@@ -23,9 +23,12 @@ app.use(express.compress()); // Added manually for gzip compression
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('KvotheTheBloodless')); // Set the salt
+app.use(express.cookieParser()); // Set the salt
 app.use(express.session({
-  store: new RedisStore(process.env.REDISTOGO_URL)
+  store: new RedisStore(process.env.REDISTOGO_URL),
+  secret: 'KvotheTheBloodless',
+  key: 'sid',
+  cookie: { maxAge: 14* 24 * 60 * 60 * 1000 } // 2-week session
 }));
 app.use(experiment.check);
 app.use(app.router);
