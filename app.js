@@ -8,6 +8,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var experiment = require('./lib/experiment');
 
 var app = express();
 var RedisStore = require('connect-redis')(express); // Add Redis for session store
@@ -26,6 +27,7 @@ app.use(express.cookieParser('KvotheTheBloodless')); // Set the salt
 app.use(express.session({
   store: new RedisStore(process.env.REDISTOGO_URL)
 }));
+app.use(experiment.check);
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
